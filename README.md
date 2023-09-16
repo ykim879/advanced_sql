@@ -1,4 +1,4 @@
-# SQL Documentation
+# Oracle SQL Documentation
 **order**: select -> from -> join -> on -> where -> group by -> order by
 ## LISTAGG: Create the list column from specific grouping ordered
 ListAGG applies on single-set aggregation and group-set aggregation.
@@ -46,3 +46,55 @@ Dept. Employees
 </html>
 
 reference: https://docs.oracle.com/cd/E11882_01/server.112/e41084/functions089.htm#SQLRF30030
+
+---
+### row_number() function
+
+![image](https://github.com/ykim879/advanced_sql/assets/59812671/05690fa2-e286-49dc-88b6-0a03a65eeda2)
+
+It assigns a unique number to each row to which it is applied (either each row in the partition or each row returned by the query), in the ordered sequence of rows specified in the order_by_clause.
+#### Use case
+It cames useful when you want to partition group with unique value of column. Such as:
+1) When you want salary ranks of employees has in each department
+2) If you want to select top N salary (but if there are duplicates it will still pick one from them) from employes per each department.
+#### Example
+##### Table
+Employee table:
+| id | name  | salary | departmentId |
+| -- | ----- | ------ | ------------ |
+| 1  | Joe   | 85000  | 1            |
+| 2  | Henry | 80000  | 2            |
+| 3  | Sam   | 60000  | 2            |
+| 4  | Max   | 90000  | 1            |
+| 5  | Janet | 69000  | 1            |
+| 6  | Randy | 85000  | 1            |
+| 7  | Will  | 70000  | 1            |
+##### Query
+```sql
+select o.*,
+       row_number () over (
+         partition by departmentId
+         order by salary desc
+       ) rn
+from  Employee o;
+```
+##### Result
+| ID | NAME  | SALARY | DEPARTMENTID | RN |
+| -- | ----- | ------ | ------------ | -- |
+| 4  | Max   | 90000  | 1            | 1  |
+| 6  | Randy | 85000  | 1            | 2  |
+| 1  | Joe   | 85000  | 1            | 3  |
+| 7  | Will  | 70000  | 1            | 4  |
+| 5  | Janet | 69000  | 1            | 5  |
+| 2  | Henry | 80000  | 2            | 1  |
+| 3  | Sam   | 60000  | 2            | 2  |
+
+## Round function
+
+![image](https://github.com/ykim879/advanced_sql/assets/59812671/22fb7af0-4003-428f-b0fb-1abde824bf4d)
+
+ROUND(number , rounded decimal)
+- positve will have n numbars of decimal after the '.'
+- negaivive will have n numbers of decimal before the '.'
+
+
