@@ -121,5 +121,17 @@ SELECT
   EMPLOYEE
 ```
 (example code is in the repos)
+## ADD DATES
+syntax: original date + INTERVAL 'number value to add' unit
+``` sql
+select order_date + INTERVAL '-10' YEAR  from orders;
+```
+### unit
+1. year
+2. month
+3. day
+4. hour
+5. minute
+6. second
 ## CREATE FUNCTION
 
