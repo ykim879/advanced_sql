@@ -106,3 +106,20 @@ to_char(date, format)
 1) YYYY-MM-DD
 2) DD/MM/YYYY
 3) Month DD, YYYY
+
+## dense_rank()
+DENSE_RANK computes the rank of a row in an ordered group of rows and returns the rank as a NUMBER.
+### with aggregation
+![image](https://github.com/ykim879/advanced_sql/assets/59812671/764aaeaa-d86e-4369-8a6d-1a5cfb9b3b75)
+### without aggregation
+![image](https://github.com/ykim879/advanced_sql/assets/59812671/587c8a18-49bb-4ca3-8de3-0d57bf892173)
+``` sql
+SELECT
+  SALARY, 
+  DENSE_RANK() OVER (ORDER BY SALARY DESC) AS RNK
+  FROM
+  EMPLOYEE
+```
+(example code is in the repos)
+## CREATE FUNCTION
+
