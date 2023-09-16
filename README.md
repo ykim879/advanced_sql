@@ -97,4 +97,12 @@ ROUND(number , rounded decimal)
 - positve will have n numbars of decimal after the '.'
 - negaivive will have n numbers of decimal before the '.'
 
-
+## to_char: Format date
+### Example 
+```sql
+to_char(date, format)
+```
+### format option examples
+1) YYYY-MM-DD
+2) DD/MM/YYYY
+3) Month DD, YYYY
