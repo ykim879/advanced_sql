@@ -45,7 +45,33 @@ output:
 | 4  | Leaf  |
 | 5  | Leaf  |
 | 3  | Leaf  |
-
+### ROWNUM (Use it for top N reporting)
+order of the row in table.
+#### top N reporting with rownum
+``` sql
+select * from (
+    select * from employees order by employee_id
+) where rownum < N
+```
+### Sequence
+generate unique sequential values
+- curval: current value of sequence
+- nextval: increments and returns the value
+use case:
+- select list without distinct group by and order by
+- insert with values (typically for pk)
+- set clause of updates
+### Version Query Pseudo Columns
+- versions_starttim/endtime: time stamp of first/last version
+- versions_startscn/end_scn: scn of first/last version
+- versions_xid
+### ORA_ROWSCN
+see when the row is last updated (cannot use in on view)
+### Others
+- column_value: return XMLTableType of column value
+- object_id: object identifier (pk)
+- row_id: address of the row
+- smldata: access underlying lob/ object relational column
 ## LISTAGG: Create the list column from specific grouping ordered
 ListAGG applies on single-set aggregation and group-set aggregation.
 ### Single-Set
