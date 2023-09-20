@@ -1,5 +1,47 @@
 # Oracle SQL Documentation
 **order**: select -> from -> join -> on -> where -> group by -> order by
+## Pseudo Columns
+These are columns that not indicated on table manually but automatcially registered on the system.
+### Pseudo Columns with "connect by clause"
+connect by clause is useful when we want to view table as tree structure. Therefore, the table which represent hierarical view, the following is very useful pseudo column to know
+#### level
+this column represent level of the tree. **you must include "start with" and "connnect by" clause to use it.
+#### connect_by_isleaf
+this represent if the row is leaf or not. It returns 1 if it is leaf and 0 otherwise.
+#### connect_by_iscycle
+this represents if current row has a child which is also ancestor. it returns 1 if it is 0 if not.
+##### Example
+This example uses level and connect_by_isleaf, to see if it the row is inner, leaf or root.
+Tree table: p_id represents parent node
+| id | p_id |
+| -- | ---- |
+| 1  | null |
+| 2  | 1    |
+| 3  | 1    |
+| 4  | 2    |
+| 5  | 2    |
+diagram:
+![image](https://github.com/ykim879/advanced_sql/assets/59812671/fd48a270-38f9-4fe9-a590-00a85cece977)
+query:
+``` sql
+select id, case 
+    when level = 1 then 'Root'
+    when connect_by_isleaf = 1 then 'Leaf'
+    else 'Inner'
+end as type
+from Tree
+start with id = (select id from Tree where p_id is null)
+connect by prior id = p_id;
+```
+output: 
+| ID | TYPE  |
+| -- | ----- |
+| 1  | Root  |
+| 2  | Inner |
+| 4  | Leaf  |
+| 5  | Leaf  |
+| 3  | Leaf  |
+
 ## LISTAGG: Create the list column from specific grouping ordered
 ListAGG applies on single-set aggregation and group-set aggregation.
 ### Single-Set
