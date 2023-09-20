@@ -20,9 +20,13 @@ Tree table: p_id represents parent node
 | 3  | 1    |
 | 4  | 2    |
 | 5  | 2    |
+
 diagram:
+
 ![image](https://github.com/ykim879/advanced_sql/assets/59812671/fd48a270-38f9-4fe9-a590-00a85cece977)
+
 query:
+
 ``` sql
 select id, case 
     when level = 1 then 'Root'
