@@ -72,6 +72,33 @@ see when the row is last updated (cannot use in on view)
 - object_id: object identifier (pk)
 - row_id: address of the row
 - smldata: access underlying lob/ object relational column
+---
+## Operations
+### 1. Set Operation
+1. Union: union return values of two queries and return all distinct rows
+2. Union All: union return values of two queries without duplicates
+3. Intersect: retun all distict rows on both query
+4. Minus: return selected on first but not on second query
+### 2. Multiset Operation
+do multiset operation on two nested tables either with "all", "distinct", or nothing operation. "all" alwasy include duplicates while distinct eliminates them
+#### 2.1 Multiset Execept
+![image](https://github.com/ykim879/advanced_sql/assets/59812671/20397c16-d917-4629-9547-f2c8095040d9)
+``` sql
+select id, set1_name multiset except distinct/all set2_name column_name from table
+```
+return set value in fist set but not on second set. to handle duplicates we use:
+1. all: for m,n, first set for m and second set for n, duplicates will have (m-n) occurences if m>n, 0, otherwise.
+2. distinct: eliminates all duplicates
+#### 2.2 Multiset Intersect
+![image](https://github.com/ykim879/advanced_sql/assets/59812671/9dd43ad4-fdde-4d4d-b4cb-a91350b30d70)
+``` sql
+select id, set1 multiset intersect distinct set2 column_name from table
+```
+retun values are common in two input nested tables. for duplicates:
+1. all: return min (m, n) times
+2. distict: eliminates all duplicates
+#### 2.3 Multiset Union
+return union values all with duplicates distict without duplicates
 ## LISTAGG: Create the list column from specific grouping ordered
 ListAGG applies on single-set aggregation and group-set aggregation.
 ### Single-Set
