@@ -99,6 +99,29 @@ retun values are common in two input nested tables. for duplicates:
 2. distict: eliminates all duplicates
 #### 2.3 Multiset Union
 return union values all with duplicates distict without duplicates
+### 3. Hierarchical Operators
+These operators are only valid if it is hierarchical queries.
+#### 3.1 Prior
+Piror causes comes with equal side as prior id = parent_column. the example is below
+``` sql
+select id, case 
+    when level = 1 then 'Root'
+    when connect_by_isleaf = 1 then 'Leaf'
+    else 'Inner'
+end as type
+from Tree
+start with id = (select id from Tree where p_id is null)
+connect by prior id = p_id;
+```
+Above, if id2's p_id column is id1 then id1 is parent of id2 and level of id2 will be 2 while level of id1 will be 1.
+#### 3.2 Connect_By_Root
+returns the root data of the row. It cannot be specified in the START WITH clause or the CONNECT BY clause of a hierarchical query. Below, it returns the department number of each row's heirarical deparment which is established by connect by prior clause.
+``` sql
+SELECT CONNECT_BY_ROOT DEPTNAME AS ROOT, DEPTNAME
+     FROM DEPARTMENT 
+     START WITH DEPTNO IN ('B01','C01','D01','E01')
+     CONNECT BY PRIOR DEPTNO = ADMRDEPT
+```
 ## LISTAGG: Create the list column from specific grouping ordered
 ListAGG applies on single-set aggregation and group-set aggregation.
 ### Single-Set
