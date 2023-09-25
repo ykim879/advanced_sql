@@ -74,6 +74,12 @@ see when the row is last updated (cannot use in on view)
 - smldata: access underlying lob/ object relational column
 ---
 ## Operations
+### 0. Operators precedence (the order of the operators)
+The order is highest to lowest:
+1. unary operators (+,-)  hierarchical operators (prior, connect_by_root)
+2. *, /
+3. addition, subtraction, concatenation (||)
+4. others
 ### 1. Set Operation
 1. Union: union return values of two queries and return all distinct rows
 2. Union All: union return values of two queries without duplicates
