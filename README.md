@@ -128,6 +128,23 @@ SELECT CONNECT_BY_ROOT DEPTNAME AS ROOT, DEPTNAME
      START WITH DEPTNO IN ('B01','C01','D01','E01')
      CONNECT BY PRIOR DEPTNO = ADMRDEPT
 ```
+---
+## 4. Functions
+### 4.1 Over
+good reference:
+https://modern-sql.com/caniuse/over_groups_between
+#### 4.1.2 Over (...Range between)
+``` sql
+with visits as (
+  select visited_on, sum(amount) amount from Customer 
+  group by visited_on
+  order by visited_on asc
+), final as (
+  select visited_on,
+  sum(amount) over (order by visited_on RANGE BETWEEN INTERVAL '6' DAY PRECEDING AND INTERVAL '0' DAY FOLLOWING ) amount
+  from visits
+) select to_char(visited_on, 'YYYY-MM-DD') visited_on, amount, round(amount / 7, 2) average_amount from final where visited_on >= (select min(visited_on) from final) + interval '6' day;
+```
 ## LISTAGG: Create the list column from specific grouping ordered
 ListAGG applies on single-set aggregation and group-set aggregation.
 ### Single-Set
